@@ -26,7 +26,7 @@ steps <- activity %>%
 hist(steps$steps, xlab = "Steps per Day", main = "Total number of steps taken each day", col = "turquoise")
 ```
 
-![](PA1_template_files/figure-markdown_github/unnamed-chunk-3-1.png)
+![](fugures/unnamed-chunk-3-1.png)
 
 ### The mean and median total number of steps taken per day
 
