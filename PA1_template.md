@@ -26,7 +26,7 @@ steps <- activity %>%
 hist(steps$steps, xlab = "Steps per Day", main = "Total number of steps taken each day", col = "turquoise")
 ```
 
-![](unnamed-chunk-3-1.png)
+![](figure/unnamed-chunk-3-1.png)
 
 ### The mean and median total number of steps taken per day
 
@@ -64,7 +64,7 @@ interval <- activity %>%
 plot.ts(interval$steps, xlab = "Interval", ylab = "Average steps", col = "Maroon")
 ```
 
-![](unnamed-chunk-7-1.png)
+![](figure/unnamed-chunk-7-1.png)
 
 ### The interval with maximum number of steps
 
@@ -119,7 +119,7 @@ imp_steps <- impact %>%
 hist(imp_steps$steps, xlab = "Steps per Day", main = "Total number of steps taken each day of the imputed data", col = "orange")
 ```
 
-![](unnamed-chunk-13-1.png)
+![](figure/unnamed-chunk-13-1.png)
 
 ### The mean and median total number of steps taken per day of the imputed data
 
@@ -176,4 +176,4 @@ plot <- ggplot(interval_wk, aes(x=interval, y=steps, color = daytype)) +
 print(plot)
 ```
 
-![](unnamed-chunk-18-1.png)
+![](figure/unnamed-chunk-18-1.png)
