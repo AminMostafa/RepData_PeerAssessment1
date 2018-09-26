@@ -1,107 +1,96 @@
----
-title: 'Reproducible Research: Peer Assessment 1'
-author: "Mostafa Amin"
-output: 
-  html_document:
-    keep_md: true
----
+Reproducible Research: Peer Assessment 1
+================
+Mostafa Amin
 
+Loading and preprocessing the data
+----------------------------------
 
-
-## Loading and preprocessing the data
-
-```r
+``` r
 activity <- read.csv("C:\\Users\\Mostafa\\Documents\\activity.csv", sep = ",", header = TRUE)
 ```
 
-## What is mean total number of steps taken per day?
+What is mean total number of steps taken per day?
+-------------------------------------------------
 
-###Number of steps per day
+### Number of steps per day
 
-```r
+``` r
 steps <- activity %>%
   group_by(date) %>%
   summarize(steps = sum(steps))
 ```
 
-###Histogram of the total number of steps taken each day
+### Histogram of the total number of steps taken each day
 
-```r
+``` r
 hist(steps$steps, xlab = "Steps per Day", main = "Total number of steps taken each day", col = "turquoise")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
+![](PA1_template_files/figure-markdown_github/unnamed-chunk-3-1.png)
 
-###The mean and median total number of steps taken per day
+### The mean and median total number of steps taken per day
 
-```r
+``` r
 mean <- mean(steps$steps, na.rm=TRUE)
 median <- median(steps$steps, na.rm=TRUE)
 ```
 
-
-```r
+``` r
 mean
 ```
 
-```
-## [1] 10766.19
-```
+    ## [1] 10766.19
 
-```r
+``` r
 median
 ```
 
-```
-## [1] 10765
-```
+    ## [1] 10765
 
-##What is the average daily activity pattern?
+What is the average daily activity pattern?
+-------------------------------------------
 
-###Average number of steps per interval
+### Average number of steps per interval
 
-```r
+``` r
 interval <- activity %>%
   group_by(interval) %>%
   summarize(steps = mean(steps, na.rm = TRUE))
 ```
 
-###time series plot
+### time series plot
 
-```r
+``` r
 plot.ts(interval$steps, xlab = "Interval", ylab = "Average steps", col = "Maroon")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
+![](PA1_template_files/figure-markdown_github/unnamed-chunk-7-1.png)
 
-###The interval with maximum number of steps
+### The interval with maximum number of steps
 
-```r
+``` r
 interval[which.max(interval$steps),]
 ```
 
-```
-## # A tibble: 1 x 2
-##   interval steps
-##      <int> <dbl>
-## 1      835  206.
-```
+    ## # A tibble: 1 x 2
+    ##   interval steps
+    ##      <int> <dbl>
+    ## 1      835  206.
 
-## Imputing missing values
+Imputing missing values
+-----------------------
 
-###Calculate and report the total number of missing values in the dataset
+### Calculate and report the total number of missing values in the dataset
 
-```r
+``` r
 sum(is.na(activity))
 ```
 
-```
-## [1] 2304
-```
+    ## [1] 2304
 
-###Imputing strategy and new dataset
+### Imputing strategy and new dataset
 
-```r
+``` r
 impact <- activity 
 for (i in 1:nrow(impact)) {
     if (is.na(impact$steps[i])) {
@@ -110,85 +99,76 @@ for (i in 1:nrow(impact)) {
 }
 ```
 
-
-```r
+``` r
 sum(is.na(impact))
 ```
 
-```
-## [1] 0
-```
+    ## [1] 0
 
-###Number of steps per day of the imputed data
+### Number of steps per day of the imputed data
 
-```r
+``` r
 imp_steps <- impact %>%
   group_by(date) %>%
   summarize(steps = sum(steps))
 ```
 
-###Histogram of the total number of steps taken each day of the imputed data
+### Histogram of the total number of steps taken each day of the imputed data
 
-```r
+``` r
 hist(imp_steps$steps, xlab = "Steps per Day", main = "Total number of steps taken each day of the imputed data", col = "orange")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-13-1.png)<!-- -->
+![](PA1_template_files/figure-markdown_github/unnamed-chunk-13-1.png)
 
-###The mean and median total number of steps taken per day of the imputed data
+### The mean and median total number of steps taken per day of the imputed data
 
-```r
+``` r
 imp_mean <- mean(imp_steps$steps, na.rm=TRUE)
 imp_median <- median(imp_steps$steps, na.rm=TRUE)
 ```
 
-
-```r
+``` r
 imp_mean
 ```
 
-```
-## [1] 10766.19
-```
+    ## [1] 10766.19
 
-```r
+``` r
 imp_median
 ```
 
-```
-## [1] 10766.19
-```
+    ## [1] 10766.19
 
 Imputing the data resulted in mean and median became the same value
 
-## Are there differences in activity patterns between weekdays and weekends?
+Are there differences in activity patterns between weekdays and weekends?
+-------------------------------------------------------------------------
 
 ### Creating new variable (daytype)
 
-```r
+``` r
 library(chron)
 ```
 
-```
-## Warning: package 'chron' was built under R version 3.5.1
-```
+    ## Warning: package 'chron' was built under R version 3.5.1
 
-```r
+``` r
 impact$daytype = chron::is.weekend(impact$date)
 impact$daytype <- ifelse(impact$daytype=="TRUE", "weekend", "weekday")
 ```
 
 ### Average steps
 
-```r
+``` r
 interval_wk <- impact %>%
   group_by(interval, daytype) %>%
   summarise(steps = mean(steps))
 ```
 
-###The plot
+### The plot
 
-```r
+``` r
 library(ggplot2)
 plot <- ggplot(interval_wk, aes(x=interval, y=steps, color = daytype)) +
   geom_line() +
@@ -196,4 +176,4 @@ plot <- ggplot(interval_wk, aes(x=interval, y=steps, color = daytype)) +
 print(plot)
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-18-1.png)<!-- -->
+![](PA1_template_files/figure-markdown_github/unnamed-chunk-18-1.png)
